@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite errors="0" failures="1" hostname="Chris-Hedleys-MacBook-Pro-2.local" name="com.cloudcredo.cassandra.UserRepositoryTest" tests="1" time="0.47" timestamp="2012-12-17T15:50:58">
+  <properties />
+  <testcase classname="com.cloudcredo.cassandra.UserRepositoryTest" name="should connect to local cassandra" time="0.123">
+    <failure message="groovy.lang.GroovyRuntimeException: Could not find matching constructor for: org.apache.cassandra.db.ColumnFamily(java.lang.String, com.netflix.astyanax.serializers.StringSerializer)" type="groovy.lang.GroovyRuntimeException">groovy.lang.GroovyRuntimeException: Could not find matching constructor for: org.apache.cassandra.db.ColumnFamily(java.lang.String, com.netflix.astyanax.serializers.StringSerializer)
+	at com.cloudcredo.cassandra.UserRepository.&lt;init&gt;(UserRepository.groovy:18)
+	at com.cloudcredo.cassandra.UserRepositoryTest.should connect to local cassandra(UserRepositoryTest.groovy:15)
+</failure>
+  </testcase>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

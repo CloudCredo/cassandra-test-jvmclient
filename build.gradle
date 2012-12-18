@@ -1,0 +1,16 @@
+apply plugin: "groovy"
+
+ext.GROOVY_VERSION = "2.0.5"
+
+repositories {
+    mavenCentral()
+    maven { url 'http://oss.sonatype.org/content/repositories/snapshots/' } //For spock with Groovy 2.0 support
+}
+
+dependencies {
+    groovy group: 'org.codehaus.groovy', name: 'groovy-all', version: GROOVY_VERSION
+    compile 'com.netflix.astyanax:astyanax:1.56.18'
+
+    testCompile 'org.spockframework:spock-core:0.7-groovy-2.0'
+
+}
