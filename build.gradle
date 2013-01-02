@@ -1,6 +1,21 @@
 apply plugin: "groovy"
+apply plugin: 'ratpack'
 
 ext.GROOVY_VERSION = "2.0.5"
+
+
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath 'com.augusttechgroup:ratpack-plugin:0.5.1'
+    }
+}
+
+task wrapper(type: Wrapper) {
+    gradleVersion = '1.0-milestone-8a'
+}
 
 repositories {
     mavenCentral()
@@ -9,7 +24,9 @@ repositories {
 
 dependencies {
     groovy group: 'org.codehaus.groovy', name: 'groovy-all', version: GROOVY_VERSION
+
     compile 'com.netflix.astyanax:astyanax:1.56.18'
+    compile 'com.augusttechgroup:ratpack-core:0.5'
 
     testCompile 'org.spockframework:spock-core:0.7-groovy-2.0'
 

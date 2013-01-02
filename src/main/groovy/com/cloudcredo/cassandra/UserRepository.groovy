@@ -1,6 +1,7 @@
 package com.cloudcredo.cassandra
 
 import com.netflix.astyanax.AstyanaxContext
+import com.netflix.astyanax.Keyspace
 import com.netflix.astyanax.connectionpool.NodeDiscoveryType
 import com.netflix.astyanax.connectionpool.impl.ConnectionPoolConfigurationImpl
 import com.netflix.astyanax.connectionpool.impl.CountingConnectionPoolMonitor
@@ -18,18 +19,19 @@ class UserRepository {
 
     private final USER =  new ColumnFamily("Standard1", StringSerializer.get(), StringSerializer.get())
 
-    def connect() {
+    def connect(port = 9160, host = "127.0.0.1") {
+
         final config = new AstyanaxConfigurationImpl()
 
         final context = new AstyanaxContext.Builder()
                 .forCluster("Test Cluster")
-                .forKeyspace("RandomKeySpace")
+                .forKeyspace("Test")
                 .withAstyanaxConfiguration(config
                 .setDiscoveryType(NodeDiscoveryType.NONE))
                 .withConnectionPoolConfiguration(new ConnectionPoolConfigurationImpl("MyConnectionPool")
-                .setPort(9160)
+                .setPort(port)
                 .setMaxConnsPerHost(1)
-                .setSeeds("127.0.0.1:9160"))
+                .setSeeds("${host}:${port}"))
                 .withConnectionPoolMonitor(new CountingConnectionPoolMonitor())
                 .buildKeyspace(ThriftFamilyFactory.getInstance());
 
@@ -37,9 +39,8 @@ class UserRepository {
 
         final keyspace = context.getEntity();
 
-        final options = ["strategy_options": ["replication_factor": "1"], "strategy_class": "SimpleStrategy"]
-        keyspace.createKeyspace(options)
-
+        createKeyspace(keyspace)
+        createColumnFamily(keyspace)
 
         keyspace
     }
@@ -56,8 +57,26 @@ class UserRepository {
     }
 
     def findUserByFirstName() {
-        final result = connect().prepareQuery(USER).getKey("Key1").execute();
+        final result = connect().prepareQuery(USER).getKey("USER").execute();
         final columns = result.getResult();
         columns.getColumnByName("firstname").getStringValue()
+    }
+
+    private void createColumnFamily(Keyspace keyspace) {
+        try {
+            keyspace.createColumnFamily(USER, null)
+        } catch (e) {
+            //Need to test for existence of column family correctly
+        }
+    }
+
+    private void createKeyspace(Keyspace keyspace) {
+        final options = ["strategy_options": ["replication_factor": "1"], "strategy_class": "SimpleStrategy"]
+
+        try {
+            keyspace.createKeyspace(options)
+        } catch (e) {
+            //Need to test for existence of keyspace
+        }
     }
 }
