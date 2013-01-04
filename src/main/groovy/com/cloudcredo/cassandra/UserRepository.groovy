@@ -9,17 +9,28 @@ import com.netflix.astyanax.impl.AstyanaxConfigurationImpl
 import com.netflix.astyanax.model.ColumnFamily
 import com.netflix.astyanax.serializers.StringSerializer
 import com.netflix.astyanax.thrift.ThriftFamilyFactory
+import groovy.util.logging.Log4j
+import org.cloudfoundry.runtime.env.CassandraServiceInfo
+import org.cloudfoundry.runtime.env.CloudEnvironment
 
 
 /**
  * @author: chris
  * @date: 17/12/2012
  */
+@Log4j
 class UserRepository {
 
-    private final USER =  new ColumnFamily("Standard1", StringSerializer.get(), StringSerializer.get())
+    private final USER = new ColumnFamily("Standard1", StringSerializer.get(), StringSerializer.get())
 
-    def connect(port = 9160, host = "127.0.0.1") {
+    private port = 5041
+
+    private host = "172.16.10.44"
+
+    def connect() {
+
+        setUpCloud()
+
 
         final config = new AstyanaxConfigurationImpl()
 
@@ -43,6 +54,29 @@ class UserRepository {
         createColumnFamily(keyspace)
 
         keyspace
+    }
+
+    def setUpCloud() {
+
+        final env = new CloudEnvironment()
+        final cassandraServiceInfos = env.getServiceInfos(CassandraServiceInfo)
+
+        log.info("Found cassandra Service Info ${cassandraServiceInfos[0]}")
+        log.info("Host: ${cassandraServiceInfos[0]?.getHost()}")
+        log.info("Port: ${cassandraServiceInfos[0]?.getPort()}")
+        log.info("ServiceName: ${cassandraServiceInfos[0]?.getServiceName()}")
+
+
+        final port = cassandraServiceInfos[0]?.getPort()
+        final host = cassandraServiceInfos[0]?.getHost()
+
+        if (port) {
+            this.port = port; log.info("Setting port to ${port}")
+        }
+
+        if (host) {
+            this.host = host; log.info("Setting host to ${host}")
+        }
     }
 
     def initData() {
