@@ -8,7 +8,7 @@ buildscript {
     repositories {
         mavenLocal()
         mavenCentral()
-        mavenRepo url:'http://maven.springframework.org/milestone/'
+        mavenRepo url: 'http://maven.springframework.org/milestone/'
     }
     dependencies {
         classpath 'com.augusttechgroup:ratpack-plugin:0.5.1'
@@ -35,20 +35,19 @@ dependencies {
     compile 'org.cloudfoundry:cloudfoundry-runtime:0.8.4.BUILD-SNAPSHOT'
 
     testCompile 'org.spockframework:spock-core:0.7-groovy-2.0'
-
 }
 
 cloudfoundry {
     target = 'http://api.cloudfoundry.test'
-    username = ''
-    password = ''
-
+    username = 'chris@cloudcredo.com'
+    password = 'Tqblxkf7'
+    instances = 3
     framework = 'java_web'
     uris = ['http://c.cloudfoundry.test', 'http://cassandra-test.cloudfoundry.test']
     services = ['cassandra-test-service']
+    file = new File("${libsDir.getPath()}/simple-cassandra-client.war")
 }
 
-cloudfoundry.file = new File("${libsDir.getPath()}/simple-cassandra-client.war")
 
 cloudfoundryService {
     serviceName = 'cassandra-test-service'
