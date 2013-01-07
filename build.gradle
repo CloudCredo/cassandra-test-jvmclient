@@ -40,8 +40,8 @@ dependencies {
 
 cloudfoundry {
     target = 'http://api.cloudfoundry.test'
-    username = 'chris@cloudcredo.com'
-    password = 'Tqblxkf7'
+    username = ''
+    password = ''
 
     framework = 'java_web'
     uris = ['http://c.cloudfoundry.test', 'http://cassandra-test.cloudfoundry.test']
