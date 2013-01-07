@@ -5,5 +5,5 @@ get("/") {
     repo.initData()
     final userName = repo.findUserByFirstName()
 
-    render('index.html', [port: "1000", url: "localhost", user: userName])
+    render('index.html', [port: repo.port, url: repo.host, cassandraUsername: repo.credentials.getUsername(), user: userName])
 }

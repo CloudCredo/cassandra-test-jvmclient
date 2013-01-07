@@ -1,10 +1,12 @@
 package com.cloudcredo.cassandra
 
 import com.netflix.astyanax.AstyanaxContext
+import com.netflix.astyanax.AuthenticationCredentials
 import com.netflix.astyanax.Keyspace
 import com.netflix.astyanax.connectionpool.NodeDiscoveryType
 import com.netflix.astyanax.connectionpool.impl.ConnectionPoolConfigurationImpl
 import com.netflix.astyanax.connectionpool.impl.CountingConnectionPoolMonitor
+import com.netflix.astyanax.connectionpool.impl.SimpleAuthenticationCredentials
 import com.netflix.astyanax.impl.AstyanaxConfigurationImpl
 import com.netflix.astyanax.model.ColumnFamily
 import com.netflix.astyanax.serializers.StringSerializer
@@ -23,14 +25,15 @@ class UserRepository {
 
     private final USER = new ColumnFamily("Standard1", StringSerializer.get(), StringSerializer.get())
 
-    private port = 5041
+    def port = 9160
 
-    private host = "172.16.10.44"
+    def host = "localhost"
+
+    private AuthenticationCredentials credentials
 
     def connect() {
 
         setUpCloud()
-
 
         final config = new AstyanaxConfigurationImpl()
 
@@ -41,6 +44,7 @@ class UserRepository {
                 .setDiscoveryType(NodeDiscoveryType.NONE))
                 .withConnectionPoolConfiguration(new ConnectionPoolConfigurationImpl("MyConnectionPool")
                 .setPort(port)
+                .setAuthenticationCredentials(credentials)
                 .setMaxConnsPerHost(1)
                 .setSeeds("${host}:${port}"))
                 .withConnectionPoolMonitor(new CountingConnectionPoolMonitor())
@@ -61,11 +65,6 @@ class UserRepository {
         final env = new CloudEnvironment()
         final cassandraServiceInfos = env.getServiceInfos(CassandraServiceInfo)
 
-        log.info("Found cassandra Service Info ${cassandraServiceInfos[0]}")
-        log.info("Host: ${cassandraServiceInfos[0]?.getHost()}")
-        log.info("Port: ${cassandraServiceInfos[0]?.getPort()}")
-        log.info("ServiceName: ${cassandraServiceInfos[0]?.getServiceName()}")
-
 
         final port = cassandraServiceInfos[0]?.getPort()
         final host = cassandraServiceInfos[0]?.getHost()
@@ -77,6 +76,17 @@ class UserRepository {
         if (host) {
             this.host = host; log.info("Setting host to ${host}")
         }
+
+        final username = cassandraServiceInfos[0]?.getUserName()
+        final password = cassandraServiceInfos[0]?.getPassword()
+        credentials = new SimpleAuthenticationCredentials(username, password)
+
+        log.info("Found cassandra Service Info ${cassandraServiceInfos[0]}")
+        log.info("Host: ${host}")
+        log.info("Port: ${port}")
+        log.info("ServiceName: ${cassandraServiceInfos[0]?.getServiceName()}")
+        log.info("Username: ${username}")
+        log.info("Password: ${password}")
     }
 
     def initData() {

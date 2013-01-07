@@ -1,17 +1,18 @@
 apply plugin: "groovy"
 apply plugin: 'ratpack'
+apply plugin: 'cloudfoundry'
 
 ext.GROOVY_VERSION = "2.0.5"
-
-
 
 buildscript {
     repositories {
         mavenLocal()
         mavenCentral()
+        mavenRepo url:'http://maven.springframework.org/milestone/'
     }
     dependencies {
         classpath 'com.augusttechgroup:ratpack-plugin:0.5.1'
+        classpath group: 'org.gradle.api.plugins', name: 'gradle-cf-plugin', version: '0.2.0'
     }
 }
 
@@ -35,4 +36,22 @@ dependencies {
 
     testCompile 'org.spockframework:spock-core:0.7-groovy-2.0'
 
+}
+
+cloudfoundry {
+    target = 'http://api.cloudfoundry.test'
+    username = 'chris@cloudcredo.com'
+    password = 'Tqblxkf7'
+
+    framework = 'java_web'
+    uris = ['http://c.cloudfoundry.test', 'http://cassandra-test.cloudfoundry.test']
+    services = ['cassandra-test-service']
+}
+
+cloudfoundry.file = new File("${libsDir.getPath()}/simple-cassandra-client.war")
+
+cloudfoundryService {
+    serviceName = 'cassandra-test-service'
+    vendor = 'cassandra'
+    version = '1.6.1'
 }
