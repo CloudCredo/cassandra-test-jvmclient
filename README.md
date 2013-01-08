@@ -1,6 +1,8 @@
 Simple Cassandra Client
 =======================
 
+Author: Chris Hedley
+
 This application is a simple [Cassandra] [1] client which will attempt to connect to a provisioned [Cassandra] [1]
 service in CloudFoundry. We assume that you already have Cassandra as a Service setup in your Cloudfoundry deployment.
 
