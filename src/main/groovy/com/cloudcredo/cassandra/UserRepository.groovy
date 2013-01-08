@@ -100,6 +100,10 @@ class UserRepository {
         keyspace.execute();
     }
 
+    def writeLoadsOfData() {
+
+    }
+
     def findUserByFirstName() {
         final result = connect().prepareQuery(USER).getKey("USER").execute();
         final columns = result.getResult();

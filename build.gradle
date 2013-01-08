@@ -41,7 +41,7 @@ cloudfoundry {
     target = 'http://api.cloudfoundry.test'
     username = 'chris@cloudcredo.com'
     password = 'Tqblxkf7'
-    instances = 3
+    instances = 1
     framework = 'java_web'
     uris = ['http://c.cloudfoundry.test', 'http://cassandra-test.cloudfoundry.test']
     services = ['cassandra-test-service']
