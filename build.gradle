@@ -42,8 +42,8 @@ dependencies {
 
 cloudfoundry {
     target = 'http://api.cloudfoundry.test'
-    username = ''
-    password = ''
+    username = 'user@wherver.com'
+    password = 'password'
     instances = 1
     framework = 'java_web'
     uris = ['http://c.cloudfoundry.test', 'http://cassandra-test.cloudfoundry.test']
