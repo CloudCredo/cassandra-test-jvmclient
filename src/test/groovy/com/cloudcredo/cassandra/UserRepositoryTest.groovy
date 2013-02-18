@@ -1,16 +1,19 @@
 package com.cloudcredo.cassandra
 
 import com.netflix.astyanax.Keyspace
+import org.junit.Ignore
 import spock.lang.Specification
 
 /**
  * @author: chris
  * @date: 17/12/2012
  */
+@Ignore("nned to look into embedding Cassandra...")
 class UserRepositoryTest extends Specification {
 
-    private final CASSANDRA_HOST = "localhost"
-    private final CASSANDRA_PORT = 9160
+    private final CASSANDRA_HOST = "172.16.10.44"
+    private final CASSANDRA_PORT = 5041
+
 
     def "should connect to local cassandra"() {
 
