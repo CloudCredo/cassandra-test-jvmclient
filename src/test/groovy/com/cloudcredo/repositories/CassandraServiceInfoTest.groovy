@@ -1,4 +1,4 @@
-package com.cloudcredo.cassandra
+package com.cloudcredo.repositories
 import org.cloudfoundry.runtime.env.CassandraServiceInfo
 import org.cloudfoundry.runtime.env.CloudEnvironment
 import org.junit.Test
@@ -9,7 +9,7 @@ import spock.lang.Specification
  */
 class CassandraServiceInfoTest extends Specification {
 
-    final serviceName = "cassandra-1"
+    final serviceName = "repositories-1"
     final hostname = "hostname"
     final port = 8080
     final password = "password"
@@ -46,7 +46,7 @@ class CassandraServiceInfoTest extends Specification {
         """
 {"redis-2.2":[{
         "name": "${serviceName}",
-        "label": "cassandra-1.1.6",
+        "label": "repositories-1.1.6",
         "plan": "free",
         "credentials": {
             "node_id": "redis_node_8",

@@ -3,6 +3,7 @@ apply plugin: 'ratpack'
 apply plugin: 'cloudfoundry'
 
 ext.GROOVY_VERSION = "2.0.5"
+ext.SPRING_VERSION = '3.2.0.RELEASE'
 
 buildscript {
     repositories {
@@ -30,30 +31,47 @@ repositories {
 dependencies {
     groovy group: 'org.codehaus.groovy', name: 'groovy-all', version: GROOVY_VERSION
 
+    //Cassandra Dependencies
     compile 'com.netflix.astyanax:astyanax:1.56.18'
     compile 'com.augusttechgroup:ratpack-core:0.5'
 
-    //compile 'com.cloudcredo.cloudfoundry:cassandra-provider:0.0.1'
+    //Spring Dependencies
+    compile group: 'org.springframework', name: 'spring-context', version: SPRING_VERSION
+    compile group: 'org.springframework', name: 'spring-core', version: SPRING_VERSION
+    compile group: 'org.springframework', name: 'spring-beans', version: SPRING_VERSION
+    compile group: 'org.springframework', name: 'spring-expression', version: SPRING_VERSION
+    compile group: 'org.springframework', name: 'spring-aspects', version: SPRING_VERSION
+    compile group: 'org.springframework', name: 'spring-aop', version: SPRING_VERSION
+
+    //Spring Data/ORM Dependencies
+    compile group: 'org.springframework', name: 'spring-orm', version: SPRING_VERSION
+    compile group: 'org.springframework.data', name: 'spring-data-jpa', version: "1.2.0.RELEASE"
+
+    //Cloud Foudnry Dependencies
     compile 'org.opencredo:cloudfoundry-runtime:0.8.4.BUILD-SNAPSHOT'
 
+    //Hibernate Example
+    compile group: 'org.hibernate.javax.persistence', name: 'hibernate-jpa-2.0-api', version: "1.0.0.Final"
+    compile group: 'org.hibernate', name: 'hibernate-entitymanager', version: "4.1.4.Final"
+
+    //Web Framework dependencies
     testCompile 'org.spockframework:spock-core:0.7-groovy-2.0'
     testCompile 'cglib:cglib:2.2.2'
 }
 
 cloudfoundry {
-    target = 'http://api.cloudfoundry.test'
-    username = 'user@wherver.com'
-    password = 'password'
+    target = 'http://api.vcap.me'
+    username = 'chris@cloudcredo.com'
+    password = 'Tqblxkf7'
     instances = 1
     framework = 'java_web'
-    uris = ['http://c.cloudfoundry.test', 'http://cassandra-test.cloudfoundry.test']
-    services = ['cassandra-test-service']
+    uris = ['http://qcon.vcap.me']
+    services = ['qcon-postgresql-service']
     file = new File("${libsDir.getPath()}/simple-cassandra-client.war")
 }
 
-
 cloudfoundryService {
-    serviceName = 'cassandra-test-service'
-    vendor = 'cassandra'
-    version = '1.6.1'
+    serviceName = 'qcon-postgresql-service'
+    vendor = 'postgresql'
+    version = '9.0'
 }

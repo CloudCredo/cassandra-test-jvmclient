@@ -1,4 +1,4 @@
-package com.cloudcredo.cassandra
+package com.cloudcredo.repositories
 
 import com.netflix.astyanax.Keyspace
 import org.junit.Ignore
@@ -9,7 +9,7 @@ import spock.lang.Specification
  * @date: 17/12/2012
  */
 @Ignore("nned to look into embedding Cassandra...")
-class UserRepositoryTest extends Specification {
+class CassandraRepositoryTest extends Specification {
 
     private final CASSANDRA_HOST = "172.16.10.44"
     private final CASSANDRA_PORT = 5041
@@ -18,7 +18,7 @@ class UserRepositoryTest extends Specification {
     def "should connect to local cassandra"() {
 
         given: "A user repostory"
-        final unit = new UserRepository(port: CASSANDRA_PORT, host: CASSANDRA_HOST)
+        final unit = new CassandraRepository(port: CASSANDRA_PORT, host: CASSANDRA_HOST)
 
         when: "a connection is requested"
         final actual = unit.connect()
@@ -30,7 +30,7 @@ class UserRepositoryTest extends Specification {
     def "should write and read data to users column family"() {
 
         given: "A User repository"
-        final unit = new UserRepository(port: CASSANDRA_PORT, host: CASSANDRA_HOST)
+        final unit = new CassandraRepository(port: CASSANDRA_PORT, host: CASSANDRA_HOST)
 
         when: "Data is created"
         unit.initData()

@@ -1,4 +1,4 @@
-package com.cloudcredo.cassandra
+package com.cloudcredo.repositories
 
 import com.netflix.astyanax.AstyanaxContext
 import com.netflix.astyanax.AuthenticationCredentials
@@ -21,7 +21,7 @@ import org.cloudfoundry.runtime.env.CloudEnvironment
  * @date: 17/12/2012
  */
 @Log4j
-class UserRepository {
+class CassandraRepository {
 
     private final USER = new ColumnFamily("Standard1", StringSerializer.get(), StringSerializer.get())
 
@@ -81,7 +81,7 @@ class UserRepository {
         final password = cassandraServiceInfos[0]?.getPassword()
         credentials = new SimpleAuthenticationCredentials(username, password)
 
-        log.info("Found cassandra Service Info ${cassandraServiceInfos[0]}")
+        log.info("Found repositories Service Info ${cassandraServiceInfos[0]}")
         log.info("Host: ${host}")
         log.info("Port: ${port}")
         log.info("ServiceName: ${cassandraServiceInfos[0]?.getServiceName()}")
